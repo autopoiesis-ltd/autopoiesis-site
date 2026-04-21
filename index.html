@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Autopoiesis — the shape of compromise</title>
+
+<meta name="description" content="Autopoiesis.">
+<meta name="theme-color" content="#0B0C0D">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Autopoiesis">
+<meta property="og:description" content="Autopoiesis.">
+
+<link rel="icon" type="image/svg+xml" href="/autopoiesis-logo.svg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0B0C0D;
+    --ink-lift: #141618;
+    --paper: #F7F3E9;
+    --paper-dim: rgba(247,243,233,0.70);
+    --paper-muted: rgba(247,243,233,0.45);
+    --paper-faint: rgba(247,243,233,0.25);
+    --line: rgba(247,243,233,0.10);
+    --rec: #B5D4C1;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-weight: 300;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  .crt-scanlines {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 2px,
+      rgba(247, 243, 233, 0.028) 2px,
+      rgba(247, 243, 233, 0.028) 3px
+    );
+  }
+
+  .eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--paper-muted);
+    font-weight: 400;
+  }
+
+  /* ==================== NAV ==================== */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 10;
+    padding: 26px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    backdrop-filter: blur(10px);
+    background: rgba(11, 12, 13, 0.3);
+  }
+  nav .brand {
+    display: flex; align-items: center; gap: 12px;
+    color: var(--paper);
+  }
+  nav .brand .mark { width: 24px; height: 24px; }
+  nav .brand .wm {
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+  nav .status {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--paper-muted);
+  }
+  nav .status .bit {
+    font-size: 11px;
+    color: var(--rec);
+    min-width: 8px;
+    text-align: center;
+    display: inline-block;
+    animation: bit-breathe 3s ease-in-out infinite;
+  }
+  @keyframes bit-breathe {
+    0%, 100% { opacity: 0.6; }
+    50%      { opacity: 1; }
+  }
+  @media (max-width: 600px) {
+    nav { padding: 20px 24px; }
+  }
+
+  /* ==================== HERO ==================== */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 120px 24px 80px;
+    position: relative;
+    background: radial-gradient(ellipse 70% 50% at 50% 50%, #181A1D 0%, var(--ink) 75%);
+  }
+  .hero-canvas-wrap {
+    width: min(56vmin, 480px);
+    height: min(56vmin, 480px);
+    margin-bottom: 56px;
+    position: relative;
+  }
+  .hero-canvas-wrap canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .hero-wordmark {
+    font-size: clamp(48px, 10vw, 120px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-weight: 500;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+  .hero-tagline {
+    font-size: clamp(12px, 1.5vw, 14px);
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--paper-muted);
+    font-weight: 400;
+    text-align: center;
+  }
+
+  /* ==================== CONTACT ==================== */
+  .contact {
+    text-align: center;
+    padding: 100px 24px 120px;
+    border-top: 1px solid var(--line);
+  }
+  .contact .eyebrow { margin-bottom: 28px; }
+  .contact h2 {
+    font-size: clamp(28px, 4vw, 40px);
+    letter-spacing: -0.015em;
+    font-weight: 500;
+    margin-bottom: 24px;
+  }
+  .contact p {
+    color: var(--paper-muted);
+    max-width: 500px;
+    margin: 0 auto 40px;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  .contact a.mail {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 22px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    color: var(--paper);
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    transition: border-color 200ms ease, background 200ms ease;
+  }
+  .contact a.mail:hover {
+    border-color: var(--paper-muted);
+    background: var(--ink-lift);
+  }
+  .contact a.mail .arrow {
+    opacity: 0.6;
+    transition: transform 200ms ease;
+  }
+  .contact a.mail:hover .arrow { transform: translateX(3px); }
+
+  /* ==================== FOOTER ==================== */
+  footer {
+    padding: 48px 40px 56px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    max-width: 1240px;
+    margin: 0 auto;
+  }
+  footer .brand {
+    display: flex; align-items: center; gap: 12px;
+  }
+  footer .brand .mark { width: 24px; height: 24px; color: var(--paper); }
+  footer .brand .wm {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+  footer .legal {
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--paper-faint);
+  }
+</style>
+</head>
+<body>
+
+<div class="crt-scanlines" aria-hidden="true"></div>
+
+<!-- ============ NAV ============ -->
+<nav>
+  <div class="brand">
+    <div class="mark" id="nav-mark"></div>
+    <div class="wm">autopoiesis</div>
+  </div>
+  <div class="status">
+    <span class="bit" id="status-bit" aria-hidden="true">0</span>
+    <span class="status-text">in genesis</span>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<div class="hero">
+  <div class="hero-canvas-wrap">
+    <canvas id="hero-canvas"></canvas>
+  </div>
+  <h1 class="hero-wordmark">autopoiesis</h1>
+  <div class="hero-tagline">self-adaptive security</div>
+</div>
+
+<!-- ============ CONTACT ============ -->
+<section class="contact">
+  <h2>Get in touch.</h2>
+  <p>We&rsquo;re in closed genesis.</p>
+  <a class="mail" href="mailto:info@autopoiesis.uk">
+    info@autopoiesis.uk
+    <span class="arrow">&rarr;</span>
+  </a>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="brand">
+    <div class="mark" id="footer-mark"></div>
+    <div class="wm">autopoiesis</div>
+  </div>
+  <div class="legal">© MMXXVI &middot; in genesis</div>
+</footer>
+
+<script>
+// =====================================================
+// Closed Helix generator
+// =====================================================
+function closedHelix({ size = 24 } = {}) {
+  const cx = size/2, cy = size/2;
+  const R = size * 0.34, d = size * 0.068, N = 8;
+  const sw = size * 0.020;
+  const steps = 200;
+  const pA = [], pB = [];
+  for (let i = 0; i <= steps; i++) {
+    const t = (i/steps) * Math.PI * 2;
+    const s = Math.sin(N * t) * d;
+    pA.push([cx + (R + s) * Math.cos(t), cy + (R + s) * Math.sin(t)]);
+    pB.push([cx + (R - s) * Math.cos(t), cy + (R - s) * Math.sin(t)]);
+  }
+  const toPath = (pts) => 'M' + pts.map(p => `${p[0].toFixed(2)},${p[1].toFixed(2)}`).join(' L') + ' Z';
+  const maskR = sw * 2.1;
+  let circles = '';
+  for (let k = 0; k < 2 * N; k++) {
+    if (k % 2 === 0) {
+      const t = k * Math.PI / N;
+      const x = cx + R * Math.cos(t), y = cy + R * Math.sin(t);
+      circles += `<circle cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" r="${maskR.toFixed(2)}" fill="black"/>`;
+    }
+  }
+  const id = 'h' + Math.random().toString(36).slice(2,9);
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" fill="none" style="display:block;width:100%;height:100%">
+    <defs><mask id="${id}"><rect width="${size}" height="${size}" fill="white"/>${circles}</mask></defs>
+    <path d="${toPath(pA)}" fill="none" stroke="currentColor" stroke-width="${sw.toFixed(2)}" stroke-linecap="round"/>
+    <path d="${toPath(pB)}" fill="none" stroke="currentColor" stroke-width="${sw.toFixed(2)}" stroke-linecap="round" mask="url(#${id})"/>
+  </svg>`;
+}
+
+document.getElementById('nav-mark').innerHTML    = closedHelix({ size: 24 });
+document.getElementById('footer-mark').innerHTML = closedHelix({ size: 24 });
+
+// =====================================================
+// Interactive 3D hero canvas
+// =====================================================
+function createHelixRenderer(canvas, opts = {}) {
+  const ctx = canvas.getContext('2d');
+  const N = opts.N ?? 8;
+  const steps = opts.steps ?? 280;
+  const color = opts.color ?? '#F7F3E9';
+
+  let targetRotX = 0, targetRotY = 0;
+  let rotX = 0, rotY = 0;
+  let phase = 0;
+  let idleBias = 0;
+  let lastMouseTime = 0;
+  let mouseNear = false;
+  let reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function pointsFor(ph) {
+    const out = [[], []];
+    for (let s = 0; s < 2; s++) {
+      const po = s === 0 ? 0 : Math.PI;
+      for (let i = 0; i <= steps; i++) {
+        const u = (i / steps) * Math.PI * 2;
+        const v = N * u + ph + po;
+        const cv = Math.cos(v), sv = Math.sin(v);
+        out[s].push([
+          (1 + 0.2 * cv) * Math.cos(u),
+          (1 + 0.2 * cv) * Math.sin(u),
+          0.2 * sv,
+        ]);
+      }
+    }
+    return out;
+  }
+  function rotate(p, sx, cx_, sy, cy_) {
+    const [x, y, z] = p;
+    const y1 = y * cx_ - z * sx;
+    const z1 = y * sx + z * cx_;
+    const x2 = x * cy_ + z1 * sy;
+    const z2 = -x * sy + z1 * cy_;
+    return [x2, y1, z2];
+  }
+  function resize() {
+    const dpr = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = Math.round(rect.width * dpr);
+    canvas.height = Math.round(rect.height * dpr);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function draw() {
+    const W = canvas.width, H = canvas.height;
+    const cx = W / 2, cy = H / 2;
+    const scale = Math.min(W, H) * 0.34;
+    const sw = Math.min(W, H) * 0.0135;
+    ctx.clearRect(0, 0, W, H);
+    ctx.strokeStyle = color;
+    ctx.lineWidth = sw;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    const sx = Math.sin(rotX), cxR = Math.cos(rotX);
+    const sy = Math.sin(rotY), cyR = Math.cos(rotY);
+    const pts = pointsFor(phase);
+    const segs = [];
+    for (let s = 0; s < 2; s++) {
+      let prev = null;
+      for (let i = 0; i <= steps; i++) {
+        const r = rotate(pts[s][i], sx, cxR, sy, cyR);
+        if (prev) {
+          segs.push({
+            x1: cx + prev[0] * scale, y1: cy + prev[1] * scale,
+            x2: cx + r[0] * scale,    y2: cy + r[1] * scale,
+            z:  (prev[2] + r[2]) * 0.5,
+          });
+        }
+        prev = r;
+      }
+    }
+    segs.sort((a, b) => a.z - b.z);
+    for (const s of segs) {
+      const a = 0.35 + 0.65 * (s.z + 0.22) / 0.44;
+      ctx.globalAlpha = Math.max(0.22, Math.min(1, a));
+      ctx.beginPath();
+      ctx.moveTo(s.x1, s.y1);
+      ctx.lineTo(s.x2, s.y2);
+      ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  function tick() {
+    const now = performance.now();
+    const active = (now - lastMouseTime) < 1500 && mouseNear;
+    let tX = targetRotX, tY = targetRotY;
+    if (!active && !reducedMotion) {
+      idleBias += 0.004;
+      tX = targetRotX * 0.3 + Math.sin(idleBias * 0.6) * 0.12;
+      tY = targetRotY * 0.3 + idleBias;
+    }
+    rotX += (tX - rotX) * 0.06;
+    rotY += (tY - rotY) * 0.06;
+    if (!reducedMotion) phase += 0.004;
+    draw();
+    requestAnimationFrame(tick);
+  }
+
+  function onMove(e) {
+    const rect = canvas.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const nx = (e.clientX - cx) / (rect.width / 2);
+    const ny = (e.clientY - cy) / (rect.height / 2);
+    const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+    targetRotY =  clamp(nx, -1.8, 1.8) * 0.8;
+    targetRotX = -clamp(ny, -1.8, 1.8) * 0.7;
+    lastMouseTime = performance.now();
+    mouseNear = Math.abs(nx) < 2.5 && Math.abs(ny) < 2.5;
+  }
+  window.addEventListener('mousemove', onMove, { passive: true });
+  window.addEventListener('touchmove', (e) => {
+    if (e.touches[0]) onMove({ clientX: e.touches[0].clientX, clientY: e.touches[0].clientY });
+  }, { passive: true });
+
+  tick();
+}
+
+createHelixRenderer(document.getElementById('hero-canvas'), { N: 8, steps: 280 });
+
+// =====================================================
+// Continuous bit flicker (status indicator)
+// =====================================================
+(function bitFlicker() {
+  const bit = document.getElementById('status-bit');
+  if (!bit) return;
+  function flip() {
+    bit.textContent = Math.random() < 0.5 ? '0' : '1';
+    setTimeout(flip, 90 + Math.random() * 150);
+  }
+  flip();
+})();
+
+// =====================================================
+// Binary scramble — every meaningful text element
+// =====================================================
+(function setupScramble() {
+  const reducedMotion = window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reducedMotion) return;
+
+  const POOL = '01';
+  const randChar = () => POOL[Math.floor(Math.random() * POOL.length)];
+  const SCRAMBLEABLE = /[\p{L}\p{N}]/u;
+
+  const REGISTRY = [];
+
+  function prepare(el) {
+    el.setAttribute('aria-label', el.textContent.trim().replace(/\s+/g, ' '));
+    const chars = [];
+
+    function walk(node) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        const text = node.textContent;
+        if (!text) return;
+        const frag = document.createDocumentFragment();
+        for (const ch of text) {
+          const span = document.createElement('span');
+          span.setAttribute('aria-hidden', 'true');
+          span.textContent = ch;
+          frag.appendChild(span);
+          if (SCRAMBLEABLE.test(ch)) {
+            const entry = { span, char: ch };
+            chars.push(entry);
+            REGISTRY.push(entry);
+          }
+        }
+        node.parentNode.replaceChild(frag, node);
+      } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName !== 'BR') {
+        Array.from(node.childNodes).forEach(walk);
+      }
+    }
+    walk(el);
+    return chars;
+  }
+
+  function run(chars, duration) {
+    if (chars.length === 0) return;
+
+    const lockTimes = chars.map((_, i) => {
+      const base = (i / Math.max(1, chars.length - 1)) * duration * 0.6;
+      const jitter = Math.random() * duration * 0.4;
+      return base + jitter;
+    });
+
+    for (const { span } of chars) {
+      span.textContent = randChar();
+      span.style.opacity = '0.3';
+    }
+
+    let start = 0, lastRefresh = 0;
+    function frame(now) {
+      if (!start) start = now;
+      const elapsed = now - start;
+      const refresh = (now - lastRefresh) > 45;
+      if (refresh) lastRefresh = now;
+
+      let locked = 0;
+      for (let i = 0; i < chars.length; i++) {
+        const { span, char } = chars[i];
+        if (elapsed >= lockTimes[i]) {
+          if (span.textContent !== char) {
+            span.textContent = char;
+            span.style.opacity = '1';
+          }
+          locked++;
+        } else {
+          if (refresh) span.textContent = randChar();
+          const p = elapsed / lockTimes[i];
+          span.style.opacity = (0.3 + p * 0.6).toFixed(2);
+        }
+      }
+      if (locked < chars.length) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  function durationFor(len) {
+    if (len < 15)  return 900;
+    if (len < 40)  return 1200;
+    if (len < 100) return 1600;
+    if (len < 250) return 2000;
+    return 2400;
+  }
+
+  const SELECTORS = [
+    'nav .wm',
+    'nav .status .status-text',
+    '.hero-wordmark',
+    '.hero-tagline',
+    '.contact .eyebrow',
+    '.contact h2',
+    '.contact p',
+    '.contact .mail',
+    'footer .wm',
+    'footer .legal',
+  ];
+
+  const IMMEDIATE = new Set([
+    'nav .wm',
+    'nav .status .status-text',
+    '.hero-wordmark',
+    '.hero-tagline',
+  ]);
+
+  const ready = (document.fonts && document.fonts.ready)
+    ? document.fonts.ready
+    : Promise.resolve();
+
+  ready.then(() => {
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting && !entry.target.dataset.scrambled) {
+          entry.target.dataset.scrambled = '1';
+          const chars = prepare(entry.target);
+          run(chars, durationFor(chars.length));
+          observer.unobserve(entry.target);
+        }
+      }
+    }, { threshold: 0.25 });
+
+    SELECTORS.forEach((sel) => {
+      document.querySelectorAll(sel).forEach((el) => {
+        if (IMMEDIATE.has(sel)) {
+          const chars = prepare(el);
+          run(chars, durationFor(chars.length));
+        } else {
+          observer.observe(el);
+        }
+      });
+    });
+  });
+
+  // Ambient one-character glitch, 15-30s after load
+  function startAmbientGlitch() {
+    function visibleChars() {
+      const out = [];
+      for (const entry of REGISTRY) {
+        const r = entry.span.getBoundingClientRect();
+        if (r.bottom > 0 && r.top < window.innerHeight &&
+            r.right > 0 && r.left < window.innerWidth) {
+          out.push(entry);
+        }
+      }
+      return out;
+    }
+    function glitchOne() {
+      const pool = visibleChars();
+      if (pool.length === 0) { scheduleNext(); return; }
+      const entry = pool[Math.floor(Math.random() * pool.length)];
+      const { span, char } = entry;
+      const duration = 220 + Math.random() * 320;
+      const start = performance.now();
+      let lastFlip = 0;
+      function frame(now) {
+        const elapsed = now - start;
+        if (elapsed >= duration) { span.textContent = char; return; }
+        if (now - lastFlip > 45) { span.textContent = randChar(); lastFlip = now; }
+        requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+      scheduleNext();
+    }
+    function scheduleNext() {
+      setTimeout(glitchOne, 15000 + Math.random() * 15000);
+    }
+    setTimeout(glitchOne, 8000);
+  }
+  startAmbientGlitch();
+})();
+</script>
+</body>
+</html>
