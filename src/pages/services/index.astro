@@ -1,0 +1,428 @@
+---
+import Base from '../../layouts/Base.astro';
+import { services } from '../../data/services';
+
+const process = [
+  {
+    num: '01',
+    title: 'Scope & threat model',
+    body: 'We map your architecture, tool surface, and trust boundaries, then agree the threat model and success criteria up front — no boilerplate scope.',
+  },
+  {
+    num: '02',
+    title: 'Build or break',
+    body: 'We red team, engineer, or advise directly against that model — manual depth alongside automated coverage, working with your engineers rather than over the wall.',
+  },
+  {
+    num: '03',
+    title: 'Report & remediate',
+    body: 'Every finding ships with a reproduction, a severity rating, and a concrete fix. Products ship as deployable modules you can run in your own environment.',
+  },
+  {
+    num: '04',
+    title: 'Retest & sustain',
+    body: 'We verify fixes hold, and can stay on as a standing adversary or advisor across releases as your system evolves.',
+  },
+];
+
+const faqs = [
+  {
+    q: 'Do you consult, or do you build products?',
+    a: 'Both. We work directly with your team on hands-on engagements — red teaming, secure builds, advisory — and we build security products (RLaaS, Private Cyber-Reasoning-Systems) that deploy into your own environment. The engagements inform the products and vice versa.',
+  },
+  {
+    q: 'Do you work directly with our engineers?',
+    a: 'Yes. We embed with your team rather than throwing a PDF over the wall — pairing with your engineers through scoping, remediation, and retest so the knowledge stays in-house.',
+  },
+  {
+    q: 'Can products run in our own cloud or on-prem?',
+    a: 'Yes. Our product modules are designed to deploy in your cloud or on your premises, with bring-your-own-key (BYOK) for inference providers — or hosted on our infrastructure if you prefer. Your security data stays where you want it.',
+  },
+  {
+    q: 'How does an engagement start?',
+    a: 'A short scoping call to understand your stack and threat model, then a fixed-scope statement of work or an ongoing retainer. We can run one-off (pre-launch hardening) or continuously against each release.',
+  },
+  {
+    q: 'Do you only work on AI agents?',
+    a: 'Agentic systems are our focus, but the work draws on a decade of security engineering across AI infrastructure, cloud and kubernetes, and consensus protocols. If your system reasons, calls tools, and acts, it is in scope.',
+  },
+];
+---
+
+<Base
+  title="Autopoiesis — services"
+  description="Security services and products for agentic systems: Red teaming, Secure builds, Advisory services, Reinforcement Learning as a Service, and Private Cyber-Reasoning-Systems."
+  active="services"
+>
+  <section class="svc-index">
+    <div class="eyebrow" data-scramble data-scramble-now>services</div>
+    <h1 data-scramble data-scramble-now>What we do.</h1>
+    <p class="intro" data-scramble>
+      We build security products and work directly with the businesses shipping
+      agentic systems &mdash; breaking what&rsquo;s brittle, building what
+      isn&rsquo;t, and putting deployable capability in your team&rsquo;s hands.
+    </p>
+
+    <div class="svc-grid">
+      {services.map((s) => (
+        <a class="svc-card" href={`/services/${s.slug}/`}>
+          <div class="svc-card-top">
+            <span class="engagement" data-scramble>{s.engagement}</span>
+            {s.status === 'in-development' && <span class="badge">{s.badge}</span>}
+          </div>
+          <h3><span class="svc-title" data-scramble>{s.title}</span></h3>
+          <p class="svc-summary" data-scramble>{s.summary}</p>
+          <ul class="svc-bullets">
+            {s.deliverables.slice(0, 4).map((d) => (
+              <li data-scramble>{d}</li>
+            ))}
+          </ul>
+          <span class="svc-more" aria-hidden="true">Read more &rarr;</span>
+        </a>
+      ))}
+
+      <a class="svc-card svc-card--research" href="mailto:info@autopoiesis.uk?subject=Research%20%26%20what%27s%20next">
+        <div class="svc-card-top">
+          <span class="engagement">
+            <span class="research-dot" aria-hidden="true"></span>
+            <span data-scramble>Always researching&hellip;</span>
+          </span>
+        </div>
+        <h3><span class="svc-title" data-scramble>More to come</span></h3>
+        <p class="svc-summary" data-scramble>
+          We continuously research new attacks and defences for agentic systems.
+          Fresh services and products ship as the frontier moves.
+        </p>
+        <span class="svc-more" aria-hidden="true">Shape what&rsquo;s next &rarr;</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============ PROCESS ============ -->
+  <section class="process">
+    <div class="eyebrow" data-scramble>how we work</div>
+    <h2 data-scramble>From scope to retest — with your team, not around it.</h2>
+    <div class="process-grid">
+      {process.map((step) => (
+        <div class="step">
+          <div class="step-num" data-scramble>{step.num}</div>
+          <h3 data-scramble>{step.title}</h3>
+          <p data-scramble>{step.body}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section class="faq">
+    <div class="eyebrow" data-scramble>faq</div>
+    <h2 data-scramble>Questions, answered.</h2>
+    <div class="faq-list">
+      {faqs.map((item) => (
+        <details class="faq-item">
+          <summary>
+            <span class="faq-q" data-scramble>{item.q}</span>
+            <span class="faq-mark" aria-hidden="true"></span>
+          </summary>
+          <div class="faq-a"><p>{item.a}</p></div>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <!-- ============ CTA ============ -->
+  <section class="svc-cta">
+    <p data-scramble>Not sure which fits? We scope engagements to your stack and threat model.</p>
+    <a class="mail" href="mailto:info@autopoiesis.uk">
+      <span data-scramble>info@autopoiesis.uk</span>
+      <span class="arrow" aria-hidden="true">&rarr;</span>
+    </a>
+  </section>
+</Base>
+
+<style>
+  /* ==================== INTRO ==================== */
+  .svc-index {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 140px 40px 0;
+  }
+  .svc-index .eyebrow { margin-bottom: 24px; }
+  .svc-index h1 {
+    font-size: clamp(32px, 5vw, 56px);
+    line-height: 1.15;
+    letter-spacing: -0.035em;
+    font-weight: 500;
+    margin-bottom: 28px;
+  }
+  .svc-index .intro {
+    color: var(--paper-dim);
+    font-size: 16px;
+    line-height: 1.8;
+    max-width: 640px;
+    margin-bottom: 44px;
+  }
+
+  /* ==================== CARD GRID ==================== */
+  .svc-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .svc-card {
+    background: var(--ink);
+    padding: 36px 34px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    text-decoration: none;
+    color: inherit;
+    transition: background 240ms ease;
+  }
+  .svc-card:hover { background: var(--ink-lift); }
+  .svc-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 2px;
+  }
+  .svc-card .engagement {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--rec);
+    font-weight: 500;
+  }
+  .svc-card h3 {
+    font-size: 19px;
+    font-weight: 500;
+    letter-spacing: -0.035em;
+    line-height: 1.25;
+  }
+  .svc-card .svc-summary {
+    color: var(--paper-muted);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .svc-bullets {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    margin-top: 4px;
+  }
+  .svc-bullets li {
+    position: relative;
+    padding-left: 20px;
+    color: var(--paper-dim);
+    font-size: 12.5px;
+    line-height: 1.5;
+  }
+  .svc-bullets li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.5em;
+    width: 6px;
+    height: 6px;
+    border: 1px solid var(--rec);
+    transform: rotate(45deg);
+  }
+  .svc-more {
+    margin-top: auto;
+    padding-top: 18px;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--paper-faint);
+    transition: color 220ms ease, transform 220ms ease;
+  }
+  .svc-card:hover .svc-more {
+    color: var(--rec);
+    transform: translateX(3px);
+  }
+
+  /* research / "more to come" teaser card */
+  .svc-card--research {
+    background:
+      repeating-linear-gradient(
+        -45deg,
+        transparent 0,
+        transparent 9px,
+        rgba(247, 243, 233, 0.012) 9px,
+        rgba(247, 243, 233, 0.012) 10px
+      ),
+      var(--ink);
+  }
+  .svc-card--research .svc-summary { color: var(--paper-dim); }
+  .research-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--rec);
+    margin-right: 8px;
+    vertical-align: middle;
+    animation: research-pulse 1.8s ease-in-out infinite;
+  }
+  @keyframes research-pulse {
+    0%, 100% { opacity: 0.25; transform: scale(0.85); }
+    50%      { opacity: 1; transform: scale(1); }
+  }
+
+  /* ==================== PROCESS ==================== */
+  .process {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 84px 40px;
+  }
+  .process .eyebrow { margin-bottom: 20px; }
+  .process h2 {
+    font-size: clamp(24px, 3.4vw, 36px);
+    letter-spacing: -0.025em;
+    font-weight: 500;
+    margin-bottom: 44px;
+    max-width: 680px;
+  }
+  .process-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .step {
+    background: var(--ink);
+    padding: 32px 26px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .step-num {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--rec);
+    font-weight: 500;
+  }
+  .step h3 {
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
+  }
+  .step p {
+    color: var(--paper-muted);
+    font-size: 12.5px;
+    line-height: 1.65;
+  }
+
+  /* ==================== FAQ ==================== */
+  .faq {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 12px 40px 24px;
+  }
+  .faq .eyebrow { margin-bottom: 20px; }
+  .faq h2 {
+    font-size: clamp(24px, 3.4vw, 36px);
+    letter-spacing: -0.025em;
+    font-weight: 500;
+    margin-bottom: 36px;
+  }
+  .faq-list { border-top: 1px solid var(--line); }
+  .faq-item { border-bottom: 1px solid var(--line); }
+  .faq-item summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 26px 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-q {
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--paper);
+  }
+  .faq-mark {
+    position: relative;
+    flex: none;
+    width: 12px;
+    height: 12px;
+  }
+  .faq-mark::before,
+  .faq-mark::after {
+    content: '';
+    position: absolute;
+    background: var(--paper-muted);
+    transition: transform 240ms ease, opacity 240ms ease;
+  }
+  .faq-mark::before { top: 5px; left: 0; width: 12px; height: 1px; }
+  .faq-mark::after { left: 5px; top: 0; width: 1px; height: 12px; }
+  .faq-item[open] .faq-mark::after { transform: scaleY(0); opacity: 0; }
+  .faq-a {
+    padding: 0 4px 28px;
+    max-width: 660px;
+  }
+  .faq-a p {
+    color: var(--paper-dim);
+    font-size: 14px;
+    line-height: 1.75;
+  }
+
+  /* ==================== CTA ==================== */
+  .svc-cta {
+    text-align: center;
+    padding: 64px 24px 96px;
+    border-top: 1px solid var(--line);
+    max-width: 1180px;
+    margin: 32px auto 0;
+  }
+  .svc-cta p {
+    color: var(--paper-muted);
+    font-size: 14px;
+    margin-bottom: 28px;
+  }
+  .svc-cta a.mail {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 22px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    color: var(--paper);
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    transition: border-color 200ms ease, background 200ms ease;
+  }
+  .svc-cta a.mail:hover {
+    border-color: var(--paper-muted);
+    background: var(--ink-lift);
+  }
+  .svc-cta a.mail .arrow {
+    opacity: 0.6;
+    transition: transform 200ms ease;
+  }
+  .svc-cta a.mail:hover .arrow { transform: translateX(3px); }
+
+  /* ==================== RESPONSIVE ==================== */
+  @media (max-width: 900px) {
+    .process-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 720px) {
+    .svc-index { padding: 116px 24px 0; }
+    .svc-grid { grid-template-columns: 1fr; }
+    .process { padding: 72px 24px; }
+    .faq { padding: 24px; }
+  }
+  @media (max-width: 520px) {
+    .process-grid { grid-template-columns: 1fr; }
+  }
+</style>

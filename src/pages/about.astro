@@ -1,0 +1,146 @@
+---
+import Base from '../layouts/Base.astro';
+import { principles } from '../data/principles';
+---
+
+<Base
+  title="Autopoiesis — about"
+  description="About Autopoiesis — self-adaptive security for agentic systems."
+  active="about"
+>
+  <section class="about">
+    <div class="eyebrow" data-scramble data-scramble-now>about</div>
+    <h1 data-scramble data-scramble-now>Autopoietic systems produce, adapt, and sustain themselves.</h1>
+
+    <p class="lede" data-scramble>Autopoiesis builds and breaks agentic systems.</p>
+
+    <p data-scramble>
+      Autonomous agents now plan, call tools, and act with real-world
+      consequences. That capability is also a new and poorly understood attack
+      surface: prompt injection, tool misuse, privilege escalation, and emergent
+      behaviour that no single component was designed to produce. We focus
+      exclusively on this frontier.
+    </p>
+
+    <p data-scramble>
+      Our work spans both sides of the problem &mdash; adversarial red teaming to
+      surface failure modes before attackers do, and secure architecture to
+      design those failure modes out from the start. Thus, you can consider
+      Autopoiesis to be an agentic security research lab. The name
+      <em>autopoiesis</em> &mdash; a system that continuously produces and
+      maintains itself &mdash; reflects how we think about security: the work is
+      self-sustaining, and the process built in rather than bolted on.
+    </p>
+
+    <h2 data-scramble>The thesis</h2>
+    <p data-scramble>
+      Autopoiesis was coined by the biologists Humberto Maturana and Francisco
+      Varela to name what makes a living thing alive: <em>operational
+      closure</em> &mdash; the system&rsquo;s own processes regenerate the very
+      network that produces them &mdash; held within a membrane it builds for
+      itself, and <em>structural coupling</em>, its ongoing adaptation to a
+      changing environment without loss of identity. Security for autonomous
+      systems, we believe, has to become exactly this: self-producing,
+      self-bounding, and self-adapting.
+    </p>
+
+    <ul class="principles">
+      {principles.map((p) => (
+        <li class="principle-item">
+          <div class="pl-head">
+            <span class="pl-term" data-scramble>{p.term}</span>
+            <span class="pl-bio" data-scramble>{p.bio}</span>
+          </div>
+          <p data-scramble>{p.body}</p>
+        </li>
+      ))}
+    </ul>
+
+    <h2 data-scramble>Founder</h2>
+    <p data-scramble>
+      Mattia Bradascio is a University of Oxford graduate in Software and Systems
+      Security, with a background in security research and machine learning. He
+      has worked at the frontier of security engineering for approximately 10
+      years, including AI infrastructure, blockchain consensus protocols,
+      kubernetes and cloud platforms.
+    </p>
+
+    <h2 data-scramble>More information</h2>
+    <p data-scramble>
+      If you&rsquo;re working on agentic systems and want them stress-tested or
+      built securely,
+      <a href="mailto:info@autopoiesis.uk">get in touch</a>.
+    </p>
+  </section>
+</Base>
+
+<style>
+  .about {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 140px 40px 100px;
+  }
+  .about .eyebrow { margin-bottom: 24px; }
+  .about h1 {
+    font-size: clamp(32px, 5vw, 56px);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    font-weight: 500;
+    margin-bottom: 40px;
+  }
+  .about p {
+    color: var(--paper-dim);
+    font-size: 15px;
+    line-height: 1.8;
+    margin-bottom: 24px;
+  }
+  .about p.lede {
+    color: var(--paper);
+    font-size: 17px;
+  }
+  .about p a { color: var(--paper); }
+  .about h2 {
+    font-size: 13px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--rec);
+    font-weight: 500;
+    margin: 44px 0 20px;
+  }
+
+  .about .principles {
+    list-style: none;
+    margin: 8px 0 0;
+    border-top: 1px solid var(--line);
+  }
+  .about .principle-item {
+    padding: 24px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .about .pl-head {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 10px;
+  }
+  .about .pl-term {
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--paper);
+  }
+  .about .pl-bio {
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--paper-faint);
+  }
+  .about .principle-item p {
+    margin-bottom: 0;
+    font-size: 14px;
+  }
+
+  @media (max-width: 600px) {
+    .about { padding: 116px 24px 80px; }
+  }
+</style>

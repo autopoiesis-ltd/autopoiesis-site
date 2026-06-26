@@ -1,0 +1,59 @@
+---
+import { services } from '../data/services';
+
+interface Props {
+  /** Marks the active top-level section for subtle highlighting. */
+  active?: 'services' | 'about' | null;
+}
+
+const { active = null } = Astro.props;
+---
+
+<nav>
+  <a class="brand" href="/">
+    <div class="mark" data-helix="24"></div>
+    <div class="wm" data-scramble data-scramble-now>autopoiesis</div>
+  </a>
+
+  <div class="nav-right">
+    <!-- Services dropdown -->
+    <div class="nav-dropdown" data-dropdown data-open="false">
+      <button
+        type="button"
+        class:list={['nav-link', 'dd-trigger', { 'is-active': active === 'services' }]}
+        aria-haspopup="true"
+        aria-expanded="false"
+      >
+        <span data-scramble data-scramble-now>services</span>
+        <span class="dd-caret" aria-hidden="true"></span>
+      </button>
+
+      <div class="dd-menu" role="menu">
+        {services.map((s) => (
+          <a class="dd-item" role="menuitem" href={`/services/${s.slug}/`}>
+            <span class="dd-num">{s.num}</span>
+            <span class="dd-body">
+              <span class="dd-title">
+                {s.title}
+                {s.status === 'in-development' && <span class="badge">{s.badge}</span>}
+              </span>
+              <span class="dd-desc">{s.summary}</span>
+            </span>
+          </a>
+        ))}
+        <div class="dd-divider"></div>
+        <a class="dd-all" role="menuitem" href="/services/">
+          All services
+          <span aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+    </div>
+
+    <a
+      class:list={['nav-link', { 'is-active': active === 'about' }]}
+      href="/about/"
+    ><span data-scramble data-scramble-now>about</span></a>
+
+    <span class="login" aria-disabled="true" data-scramble data-scramble-now>log in</span>
+  </div>
+</nav>

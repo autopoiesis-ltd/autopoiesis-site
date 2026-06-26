@@ -1,0 +1,218 @@
+---
+import Base from '../../layouts/Base.astro';
+import { services } from '../../data/services';
+
+export function getStaticPaths() {
+  return services.map((service) => ({
+    params: { slug: service.slug },
+    props: { service },
+  }));
+}
+
+const { service } = Astro.props;
+
+const idx = services.findIndex((s) => s.slug === service.slug);
+const next = services[(idx + 1) % services.length];
+---
+
+<Base
+  title={`Autopoiesis — ${service.title}`}
+  description={service.summary}
+  active="services"
+>
+  <article class="svc">
+    <a class="back" href="/services/">&larr; <span data-scramble>All services</span></a>
+
+    <div class="svc-head">
+      <div class="svc-eyebrow">
+        <span class="num" data-scramble data-scramble-now>{service.num}</span>
+        <span class="eyebrow" data-scramble data-scramble-now>service</span>
+        {service.status === 'in-development' && (
+          <span class="badge">{service.badge}</span>
+        )}
+      </div>
+      <h1 data-scramble data-scramble-now>{service.title}</h1>
+      <p class="lede" data-scramble>{service.lede}</p>
+    </div>
+
+    <div class="svc-body">
+      {service.sections.map((section) => (
+        <section class="block">
+          <h2 data-scramble>{section.heading}</h2>
+          {section.body.map((para) => (
+            <p data-scramble set:html={para} />
+          ))}
+        </section>
+      ))}
+
+      <section class="block">
+        <h2 data-scramble>What you get</h2>
+        <ul class="deliverables">
+          {service.deliverables.map((d) => (
+            <li data-scramble>{d}</li>
+          ))}
+        </ul>
+      </section>
+
+      <section class="block ideal">
+        <h2 data-scramble>Ideal for</h2>
+        <p data-scramble>{service.idealFor}</p>
+      </section>
+    </div>
+
+    <div class="svc-cta">
+      <a class="mail" href={`mailto:info@autopoiesis.uk?subject=${encodeURIComponent(service.title)}`}>
+        <span data-scramble>Discuss this engagement</span>
+        <span class="arrow" aria-hidden="true">&rarr;</span>
+      </a>
+      <a class="next" href={`/services/${next.slug}/`}>
+        <span class="next-label" data-scramble>Next</span>
+        <span class="next-title" data-scramble>{next.title}</span>
+        <span aria-hidden="true">&rarr;</span>
+      </a>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .svc {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 132px 40px 100px;
+  }
+  .back {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--paper-muted);
+    text-decoration: none;
+    margin-bottom: 40px;
+    transition: color 200ms ease;
+  }
+  .back:hover { color: var(--paper); }
+
+  .svc-head { margin-bottom: 48px; }
+  .svc-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .svc-eyebrow .num {
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    color: var(--rec);
+    font-weight: 500;
+  }
+  .svc-head h1 {
+    font-size: clamp(30px, 5vw, 52px);
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    font-weight: 500;
+    margin-bottom: 28px;
+  }
+  .svc-head .lede {
+    color: var(--paper);
+    font-size: clamp(16px, 2.2vw, 19px);
+    line-height: 1.6;
+    max-width: 620px;
+  }
+
+  .block { margin-bottom: 40px; }
+  .block h2 {
+    font-size: 13px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--rec);
+    font-weight: 500;
+    margin-bottom: 22px;
+  }
+  .block p {
+    color: var(--paper-dim);
+    font-size: 15px;
+    line-height: 1.8;
+    margin-bottom: 18px;
+  }
+  .block p em { color: var(--paper); font-style: italic; }
+
+  .deliverables {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .deliverables li {
+    position: relative;
+    padding-left: 26px;
+    color: var(--paper-dim);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .deliverables li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.62em;
+    width: 7px;
+    height: 7px;
+    border: 1px solid var(--rec);
+    transform: rotate(45deg);
+  }
+
+  .ideal p { color: var(--paper); }
+
+  .svc-cta {
+    margin-top: 24px;
+    padding-top: 56px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .svc-cta a.mail {
+    display: inline-flex;
+    align-self: flex-start;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 22px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    color: var(--paper);
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    transition: border-color 200ms ease, background 200ms ease;
+  }
+  .svc-cta a.mail:hover {
+    border-color: var(--paper-muted);
+    background: var(--ink-lift);
+  }
+  .svc-cta a.mail .arrow {
+    opacity: 0.6;
+    transition: transform 200ms ease;
+  }
+  .svc-cta a.mail:hover .arrow { transform: translateX(3px); }
+
+  .next {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: var(--paper-muted);
+    font-size: 13px;
+    transition: color 200ms ease;
+  }
+  .next:hover { color: var(--paper); }
+  .next .next-label {
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--paper-faint);
+  }
+  .next .next-title { font-weight: 500; }
+
+  @media (max-width: 600px) {
+    .svc { padding: 140px 24px 100px; }
+  }
+</style>
