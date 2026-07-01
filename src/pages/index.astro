@@ -86,12 +86,43 @@ import { principles } from '../data/principles';
   <!-- ============ CONTACT ============ -->
   <section class="contact">
     <h2 data-scramble>Get in touch!</h2>
-    <p data-scramble>Send us an email, or reach out out directly on LinkedIn</p>
-    <a class="mail" href="mailto:info@autopoiesis.uk">
-      <span data-scramble>info@autopoiesis.uk</span>
-      <span class="arrow" aria-hidden="true">&rarr;</span>
-    </a>
+    <p data-scramble>Book a call with us, or send an email &mdash; whatever suits you.</p>
+    <div class="contact-ctas">
+      <button type="button" class="book" data-calendly>
+        <span data-scramble>Book a time</span>
+        <span class="arrow" aria-hidden="true">&rarr;</span>
+      </button>
+      <a class="mail" href="mailto:info@autopoiesis.uk">
+        <span data-scramble>info@autopoiesis.uk</span>
+        <span class="arrow" aria-hidden="true">&rarr;</span>
+      </a>
+    </div>
   </section>
+
+  <!-- Calendly popup assets -->
+  <link
+    rel="stylesheet"
+    href="https://assets.calendly.com/assets/external/widget.css"
+  />
+  <script
+    src="https://assets.calendly.com/assets/external/widget.js"
+    is:inline
+    async
+  ></script>
+  <script is:inline>
+    document.addEventListener('click', (e) => {
+      const trigger = e.target.closest('[data-calendly]');
+      if (!trigger) return;
+      e.preventDefault();
+      if (window.Calendly) {
+        window.Calendly.initPopupWidget({
+          url: 'https://calendly.com/mlvb-autopoiesis',
+        });
+      } else {
+        window.open('https://calendly.com/mlvb-autopoiesis', '_blank', 'noopener');
+      }
+    });
+  </script>
 </Base>
 
 <style>
@@ -387,6 +418,34 @@ import { principles } from '../data/principles';
     font-size: 13px;
     line-height: 1.7;
   }
+  .contact-ctas {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .contact .book {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 24px;
+    border: 1px solid var(--paper);
+    border-radius: 3px;
+    background: var(--paper);
+    color: var(--ink);
+    font: inherit;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: transform 200ms ease, background 200ms ease;
+  }
+  .contact .book:hover { transform: translateY(-2px); background: #fff; }
+  .contact .book .arrow {
+    opacity: 0.7;
+    transition: transform 200ms ease;
+  }
+  .contact .book:hover .arrow { transform: translateX(3px); }
   .contact a.mail {
     display: inline-flex;
     align-items: center;

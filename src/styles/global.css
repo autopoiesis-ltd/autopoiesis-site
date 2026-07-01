@@ -80,6 +80,8 @@ nav .nav-link {
   background: none;
   border: none;
   font-family: inherit;
+  line-height: 1;
+  padding: 0;
   cursor: pointer;
 }
 nav .nav-link:hover,
@@ -106,7 +108,7 @@ nav .login:hover {
 }
 
 /* ---------- Services dropdown ---------- */
-.nav-dropdown { position: relative; }
+.nav-dropdown { position: relative; display: flex; align-items: center; }
 .nav-dropdown > .dd-trigger {
   display: inline-flex;
   align-items: center;
