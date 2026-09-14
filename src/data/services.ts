@@ -12,7 +12,9 @@ export interface Service {
   num: string;
   /** Short title used in nav, cards, and page heading */
   title: string;
-  /** One-line summary for the dropdown and grid cards */
+  /** Compact label for the services dropdown */
+  navTitle: string;
+  /** One-line summary for grid cards */
   summary: string;
   /** Engagement shape shown on the services card grid (e.g. "2–6 weeks", "Ongoing"). */
   engagement: string;
@@ -33,9 +35,10 @@ export interface Service {
 export const services: Service[] = [
   {
     slug: 'red-teaming',
+    navTitle: 'Agentic red teaming',
     num: '01',
-    title: 'Red teaming agentic systems',
-    summary: 'Adversarial testing of autonomous agents — before an attacker gets there first.',
+    title: 'Agentic red teaming',
+    summary: 'Adversarial testing of your agents.',
     engagement: '2–6 weeks',
     lede: 'We attack your agents the way a motivated adversary would, and hand you a reproducible map of what breaks.',
     status: 'available',
@@ -65,8 +68,9 @@ export const services: Service[] = [
   },
   {
     slug: 'secure-agent-build',
+    navTitle: 'Secure agentic systems',
     num: '02',
-    title: 'Building secure agentic systems',
+    title: 'Secure agentic systems',
     summary: 'Agentic architectures with security designed in, not bolted on.',
     engagement: '1–6 months',
     lede: 'We design and build agent systems where the dangerous failure modes are engineered out from the start.',
@@ -97,8 +101,9 @@ export const services: Service[] = [
   },
   {
     slug: 'advisory',
+    navTitle: 'Technical advisory',
     num: '03',
-    title: 'Advisory & architecture review',
+    title: 'Technical advisory',
     summary: 'Architecture review, threat modelling, and ongoing security advisory.',
     engagement: 'Ongoing',
     lede: 'Senior security judgement on tap — to pressure-test decisions before they ship.',
@@ -128,8 +133,9 @@ export const services: Service[] = [
   },
   {
     slug: 'reinforcement-learning',
+    navTitle: 'Reinforcement learning as a service',
     num: '04',
-    title: 'Reinforcement learning as a service (RLaaS)',
+    title: 'Reinforcement learning as a service',
     summary: 'End-to-end RL — environment design, reward modelling, training, and evaluation.',
     engagement: 'Product · in development',
     lede: 'Reinforcement learning delivered end to end, tuned to security and robustness objectives specific for your organisation',
@@ -159,8 +165,9 @@ export const services: Service[] = [
   },
   {
     slug: 'cyber-reasoning-systems',
+    navTitle: 'Private cyber reasoning systems',
     num: '05',
-    title: 'Private Cyber-Reasoning-Systems (PCRS)',
+    title: 'Private cyber reasoning systems',
     summary: "A private autonomous cyber capability that autonomously detects, patches and verifies resolution to your internal source code vulnerabilities.",
     engagement: 'Product · in development',
     lede: "Empower your internal security teams with a privately hosted Cyber Reasoning System (PCRS)",

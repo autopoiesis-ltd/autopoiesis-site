@@ -1,0 +1,77 @@
+---
+/**
+ * Live Gray–Scott reaction–diffusion: the brand artwork.
+ * An activator that feeds itself and an inhibitor that spreads faster —
+ * two feedback loops whose balance draws the pattern. Bounded parameter changes,
+ * gentle local seeds at random, overlapping intervals and a low-activity monitor
+ * keep it moving continuously.
+ */
+interface Props { cells?: number; seed?: number; speed?: number; }
+const { cells = 200, seed = 7, speed = 8 } = Astro.props;
+---
+
+<div class="turing-field" data-turing data-cells={cells} data-seed={seed} data-speed={speed}>
+  <canvas aria-hidden="true"></canvas>
+  <div class="turing-fade" aria-hidden="true"></div>
+</div>
+
+<script>
+  import { turingField } from '../scripts/turing-field.js';
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  document.querySelectorAll<HTMLElement>('[data-turing]').forEach((host) => {
+    const canvas = host.querySelector('canvas');
+    if (!canvas) return;
+    const fit = () => {
+      const r = host.getBoundingClientRect();
+      canvas.width = Math.max(1, Math.round(r.width));
+      canvas.height = Math.max(1, Math.round(r.height));
+    };
+    fit();
+    let sim: ReturnType<typeof turingField> | null = null;
+    try {
+      sim = turingField(canvas, {
+        n: Number(host.dataset.cells) || 200,
+        seed: Number(host.dataset.seed) || 7,
+        steps: Number(host.dataset.speed) || 8,
+      });
+      host.dataset.state = 'ready';
+    } catch (e) { return; }
+    const resize = new ResizeObserver(() => { fit(); sim && sim.paint(); });
+    resize.observe(host);
+    let visible = true;
+    const sync = () => {
+      if (!sim) return;
+      visible && !document.hidden && !reduced.matches ? sim.resume() : sim.stop();
+    };
+    // pause when off-screen — the simulation is CPU work
+    const intersection = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      sync();
+    }, { threshold: 0.05 });
+    intersection.observe(host);
+    reduced.addEventListener('change', sync);
+    document.addEventListener('visibilitychange', sync);
+    sync();
+    document.addEventListener('astro:before-swap', () => {
+      sim?.stop();resize.disconnect();intersection.disconnect();
+      reduced.removeEventListener('change', sync);
+      document.removeEventListener('visibilitychange', sync);
+    }, { once: true });
+  });
+</script>
+
+<style>
+  .turing-field { position: relative; width: 100%; height: 100%; min-height: 320px; overflow: hidden; background: var(--ink); }
+  canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0; }
+  [data-state="ready"] canvas { opacity: 1; }
+  .turing-fade { position: absolute; inset: 0; pointer-events: none;
+    background:
+      linear-gradient(90deg, var(--ink) 0%, rgba(20, 18, 16, 0.6) 18%, rgba(20, 18, 16, 0) 55%),
+      linear-gradient(180deg, rgba(20, 18, 16, 0.9) 0%, rgba(20, 18, 16, 0) 22%),
+      linear-gradient(0deg, rgba(20, 18, 16, 0.9) 0%, rgba(20, 18, 16, 0) 22%); }
+  @media (max-width: 900px) {
+    .turing-fade { background:
+      linear-gradient(180deg, var(--ink) 0%, rgba(20, 18, 16, 0) 30%),
+      linear-gradient(0deg, var(--ink) 0%, rgba(20, 18, 16, 0) 30%); }
+  }
+</style>

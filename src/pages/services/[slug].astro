@@ -21,53 +21,53 @@ const next = services[(idx + 1) % services.length];
   active="services"
 >
   <article class="svc">
-    <a class="back" href="/services/">&larr; <span data-scramble>All services</span></a>
+    <a class="back" href="/services/">&larr; <span>All services</span></a>
 
     <div class="svc-head">
       <div class="svc-eyebrow">
-        <span class="num" data-scramble data-scramble-now>{service.num}</span>
-        <span class="eyebrow" data-scramble data-scramble-now>service</span>
+        <span class="num">{service.num}</span>
+        <span class="eyebrow">service</span>
         {service.status === 'in-development' && (
           <span class="badge">{service.badge}</span>
         )}
       </div>
-      <h1 data-scramble data-scramble-now>{service.title}</h1>
-      <p class="lede" data-scramble>{service.lede}</p>
+      <h1>{service.title}</h1>
+      <p class="lede">{service.lede}</p>
     </div>
 
     <div class="svc-body">
       {service.sections.map((section) => (
         <section class="block">
-          <h2 data-scramble>{section.heading}</h2>
+          <h2>{section.heading}</h2>
           {section.body.map((para) => (
-            <p data-scramble set:html={para} />
+            <p set:html={para} />
           ))}
         </section>
       ))}
 
       <section class="block">
-        <h2 data-scramble>What you get</h2>
+        <h2>What you get</h2>
         <ul class="deliverables">
           {service.deliverables.map((d) => (
-            <li data-scramble>{d}</li>
+            <li>{d}</li>
           ))}
         </ul>
       </section>
 
       <section class="block ideal">
-        <h2 data-scramble>Ideal for</h2>
-        <p data-scramble>{service.idealFor}</p>
+        <h2>Ideal for</h2>
+        <p>{service.idealFor}</p>
       </section>
     </div>
 
     <div class="svc-cta">
       <a class="mail" href={`mailto:info@autopoiesis.uk?subject=${encodeURIComponent(service.title)}`}>
-        <span data-scramble>Discuss this engagement</span>
+        <span>Discuss this engagement</span>
         <span class="arrow" aria-hidden="true">&rarr;</span>
       </a>
       <a class="next" href={`/services/${next.slug}/`}>
-        <span class="next-label" data-scramble>Next</span>
-        <span class="next-title" data-scramble>{next.title}</span>
+        <span class="next-label">Next</span>
+        <span class="next-title">{next.title}</span>
         <span aria-hidden="true">&rarr;</span>
       </a>
     </div>
@@ -177,9 +177,10 @@ const next = services[(idx + 1) % services.length];
     gap: 10px;
     padding: 14px 22px;
     border: 1px solid var(--line);
-    border-radius: 3px;
+    border-radius: 0;
     color: var(--paper);
     text-decoration: none;
+    font-family: var(--font-mono);
     font-size: 12px;
     letter-spacing: 0.1em;
     transition: border-color 200ms ease, background 200ms ease;

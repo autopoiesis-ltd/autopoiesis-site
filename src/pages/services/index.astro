@@ -44,7 +44,7 @@ const faqs = [
   },
   {
     q: 'Do you only work on AI agents?',
-    a: 'Agentic systems are our focus, but the work draws on a decade of security engineering across AI infrastructure, cloud and kubernetes, and consensus protocols. If your system reasons, calls tools, and acts, it is in scope.',
+    a: 'Agentic systems are our focus, but the work draws on a decade of security engineering across AI infrastructure, cloud and kubernetes, and distributed systems.',
   },
 ];
 ---
@@ -55,9 +55,9 @@ const faqs = [
   active="services"
 >
   <section class="svc-index">
-    <div class="eyebrow" data-scramble data-scramble-now>services</div>
-    <h1 data-scramble data-scramble-now>What we do.</h1>
-    <p class="intro" data-scramble>
+    <div class="eyebrow">services</div>
+    <h1>What we do.</h1>
+    <p class="intro">
       We build security products and work directly with the businesses shipping
       agentic systems &mdash; breaking what&rsquo;s brittle, building what
       isn&rsquo;t, and putting deployable capability in your team&rsquo;s hands.
@@ -67,14 +67,14 @@ const faqs = [
       {services.map((s) => (
         <a class="svc-card" href={`/services/${s.slug}/`}>
           <div class="svc-card-top">
-            <span class="engagement" data-scramble>{s.engagement}</span>
+            <span class="engagement">{s.engagement}</span>
             {s.status === 'in-development' && <span class="badge">{s.badge}</span>}
           </div>
-          <h3><span class="svc-title" data-scramble>{s.title}</span></h3>
-          <p class="svc-summary" data-scramble>{s.summary}</p>
+          <h3><span class="svc-title">{s.title}</span></h3>
+          <p class="svc-summary">{s.summary}</p>
           <ul class="svc-bullets">
             {s.deliverables.slice(0, 4).map((d) => (
-              <li data-scramble>{d}</li>
+              <li>{d}</li>
             ))}
           </ul>
           <span class="svc-more" aria-hidden="true">Read more &rarr;</span>
@@ -85,11 +85,11 @@ const faqs = [
         <div class="svc-card-top">
           <span class="engagement">
             <span class="research-dot" aria-hidden="true"></span>
-            <span data-scramble>Always researching&hellip;</span>
+            <span>Always researching&hellip;</span>
           </span>
         </div>
-        <h3><span class="svc-title" data-scramble>More to come</span></h3>
-        <p class="svc-summary" data-scramble>
+        <h3><span class="svc-title">More to come</span></h3>
+        <p class="svc-summary">
           We continuously research new attacks and defences for agentic systems.
           Fresh services and products ship as the frontier moves.
         </p>
@@ -100,14 +100,14 @@ const faqs = [
 
   <!-- ============ PROCESS ============ -->
   <section class="process">
-    <div class="eyebrow" data-scramble>how we work</div>
-    <h2 data-scramble>From scope to retest — with your team, not around it.</h2>
+    <div class="eyebrow">how we work</div>
+    <h2>From scope to retest — with your team, not around it.</h2>
     <div class="process-grid">
       {process.map((step) => (
         <div class="step">
-          <div class="step-num" data-scramble>{step.num}</div>
-          <h3 data-scramble>{step.title}</h3>
-          <p data-scramble>{step.body}</p>
+          <div class="step-num">{step.num}</div>
+          <h3>{step.title}</h3>
+          <p>{step.body}</p>
         </div>
       ))}
     </div>
@@ -115,13 +115,13 @@ const faqs = [
 
   <!-- ============ FAQ ============ -->
   <section class="faq">
-    <div class="eyebrow" data-scramble>faq</div>
-    <h2 data-scramble>Questions, answered.</h2>
+    <div class="eyebrow">faq</div>
+    <h2>Questions, answered.</h2>
     <div class="faq-list">
       {faqs.map((item) => (
         <details class="faq-item">
           <summary>
-            <span class="faq-q" data-scramble>{item.q}</span>
+            <span class="faq-q">{item.q}</span>
             <span class="faq-mark" aria-hidden="true"></span>
           </summary>
           <div class="faq-a"><p>{item.a}</p></div>
@@ -132,9 +132,9 @@ const faqs = [
 
   <!-- ============ CTA ============ -->
   <section class="svc-cta">
-    <p data-scramble>Not sure which fits? We scope engagements to your stack and threat model.</p>
+    <p>Not sure which fits? We scope engagements to your stack and threat model.</p>
     <a class="mail" href="mailto:info@autopoiesis.uk">
-      <span data-scramble>info@autopoiesis.uk</span>
+      <span>info@autopoiesis.uk</span>
       <span class="arrow" aria-hidden="true">&rarr;</span>
     </a>
   </section>
@@ -395,9 +395,10 @@ const faqs = [
     gap: 10px;
     padding: 14px 22px;
     border: 1px solid var(--line);
-    border-radius: 3px;
+    border-radius: 0;
     color: var(--paper);
     text-decoration: none;
+    font-family: var(--font-mono);
     font-size: 12px;
     letter-spacing: 0.1em;
     transition: border-color 200ms ease, background 200ms ease;
