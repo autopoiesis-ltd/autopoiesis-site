@@ -7,7 +7,7 @@
  * keep it moving continuously.
  */
 interface Props { cells?: number; seed?: number; speed?: number; }
-const { cells = 200, seed = 7, speed = 8 } = Astro.props;
+const { cells = 200, seed, speed = 8 } = Astro.props;
 ---
 
 <div class="turing-field" data-turing data-cells={cells} data-seed={seed} data-speed={speed}>
@@ -27,11 +27,14 @@ const { cells = 200, seed = 7, speed = 8 } = Astro.props;
       canvas.height = Math.max(1, Math.round(r.height));
     };
     fit();
+    // Choose at page load, not during Astro's static build. Explicit seeds stay reproducible.
+    const seed = Number(host.dataset.seed) || Math.floor(Math.random() * 0xffffffff) + 1;
+    host.dataset.seed = String(seed);
     let sim: ReturnType<typeof turingField> | null = null;
     try {
       sim = turingField(canvas, {
         n: Number(host.dataset.cells) || 200,
-        seed: Number(host.dataset.seed) || 7,
+        seed,
         steps: Number(host.dataset.speed) || 8,
       });
       host.dataset.state = 'ready';

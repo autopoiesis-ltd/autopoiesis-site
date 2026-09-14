@@ -20,7 +20,3 @@ npm-debug.log*
 
 # playwright-mcp
 .playwright-mcp/
-
-# Blender rolling backups; keep editable .blend files
-*.blend1
-*.blend2
