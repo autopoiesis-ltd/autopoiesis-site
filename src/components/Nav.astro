@@ -1,6 +1,6 @@
 ---
 import { services } from '../data/services';
-import { appUrl } from '../data/site';
+import { appUrl, showLogin } from '../data/site';
 
 interface Props {
   /** Marks the active top-level section for subtle highlighting. */
@@ -58,6 +58,6 @@ const { active = null } = Astro.props;
     ><span>about</span></a>
 
     <a class="login login--ghost" href="/#contact">Get in touch</a>
-    <a class="login login--app" href={appUrl} rel="noopener">Log in</a>
+    {showLogin && <a class="login login--app" href={appUrl} rel="noopener">Log in</a>}
   </div>
 </nav>
