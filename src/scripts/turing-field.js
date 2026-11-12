@@ -1,10 +1,13 @@
 import { createGrayScott } from './gray-scott.js';
 
-// Canvas presentation; all chemistry and sustained stimulation live in the core.
+// Canvas 2D presentation (fallback when WebGL2 float targets are unavailable); all chemistry and sustained stimulation live in the core.
+// Shared by the Canvas 2D and WebGL presentations so both draw the same field.
+export const FIELD_DEFAULTS = Object.freeze({ n: 160, steps: 8, warmup: 0, seeds: 0, noise: 0,
+  seedEvery: 180, seedDuration: 180, breathePeriod: 3600,
+  ink: [0x14, 0x12, 0x10], bone: [0xF4, 0xF0, 0xE8], plasma: [0x7B, 0x3F, 0xE4] });
+
 export function turingField(canvas, opts) {
-  const o = { n: 160, steps: 8, warmup: 0, seeds: 0, noise: 0,
-    seedEvery: 180, seedDuration: 180, breathePeriod: 3600,
-    ink: [0x14, 0x12, 0x10], bone: [0xF4, 0xF0, 0xE8], plasma: [0x7B, 0x3F, 0xE4], ...opts };
+  const o = { ...FIELD_DEFAULTS, ...opts };
   const n = o.n;
   const simulation = createGrayScott(o);
   const step = simulation.step;

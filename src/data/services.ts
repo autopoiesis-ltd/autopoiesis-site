@@ -1,3 +1,5 @@
+import type { FieldVariant } from '../scripts/field-variants.js';
+
 export type ServiceStatus = 'available' | 'in-development';
 
 export interface ServiceSection {
@@ -30,11 +32,14 @@ export interface Service {
   deliverables: string[];
   /** Who this engagement is for */
   idealFor: string;
+  /** Living backdrop drawn behind the detail page */
+  field: FieldVariant;
 }
 
 export const services: Service[] = [
   {
     slug: 'red-teaming',
+    field: 'breach',
     navTitle: 'Agentic red teaming',
     num: '01',
     title: 'Agentic red teaming',
@@ -68,6 +73,7 @@ export const services: Service[] = [
   },
   {
     slug: 'secure-agent-build',
+    field: 'lattice',
     navTitle: 'Secure agentic systems',
     num: '02',
     title: 'Secure agentic systems',
@@ -101,6 +107,7 @@ export const services: Service[] = [
   },
   {
     slug: 'advisory',
+    field: 'survey',
     navTitle: 'Technical advisory',
     num: '03',
     title: 'Technical advisory',
@@ -132,39 +139,35 @@ export const services: Service[] = [
     idealFor: 'Teams who want experienced security input on agentic decisions without staffing a full security team.',
   },
   {
-    slug: 'reinforcement-learning',
-    navTitle: 'Reinforcement learning as a service',
+    slug: 'ai-research-platform',
+    field: 'specimen',
+    navTitle: 'AI research platform as a service',
     num: '04',
-    title: 'Reinforcement learning as a service',
-    summary: 'End-to-end RL — environment design, reward modelling, training, and evaluation.',
-    engagement: 'Product · in development',
-    lede: 'Reinforcement learning delivered end to end, tuned to security and robustness objectives specific for your organisation',
-    status: 'in-development',
-    badge: 'In development',
+    title: 'AI research platform as a service',
+    summary: 'A managed, secure platform for running AI research — experiments, evaluations, and sandboxed agents.',
+    engagement: 'Product',
+    lede: 'The infrastructure for serious AI research, delivered as a managed platform so your researchers spend their time on research rather than plumbing.',
+    status: 'available',
     sections: [
       {
         heading: 'What it covers',
         body: [
-          'We design the environment in conjunction with your security team, shape the reward model, run training, and build the evaluation harness. All of this is delivered as a managed service rather than a research project you have to staff and maintain.',
-        ],
-      },
-      {
-        heading: 'Status',
-        body: [
-          'This offering is currently in development. If reinforcement learning is on your cybersecurity roadmap, get in touch — we are taking early conversations and design partners now.',
+          'Running AI research well takes more than compute: experiments need orchestrating, agents need sandboxing, evaluations need to be reproducible, and results need to be traceable back to the exact code, data, and model that produced them. We provide that as a managed platform rather than something you have to build and maintain yourself.',
+          'The platform is built with security as a first-class concern — isolated execution for untrusted models and agents, controlled access to weights and data, and audit trails across every run. It deploys in your cloud or on your premises, or runs on our infrastructure.',
         ],
       },
     ],
     deliverables: [
-      'Environment and task design',
-      'Reward modelling and shaping',
-      'Training pipeline and runs',
-      'Evaluation harness and reporting',
+      'Experiment orchestration and tracking',
+      'Sandboxed execution for models and agents',
+      'Reproducible evaluation harnesses',
+      'Access controls and audit trails across runs',
     ],
-    idealFor: 'Cybersecurity teams with RL on the roadmap who want it delivered and evaluated, not just prototyped.',
+    idealFor: 'Research teams and labs who want a secure, reproducible research environment without building the platform themselves.',
   },
   {
     slug: 'cyber-reasoning-systems',
+    field: 'repair',
     navTitle: 'Private cyber reasoning systems',
     num: '05',
     title: 'Private cyber reasoning systems',
@@ -193,7 +196,40 @@ export const services: Service[] = [
     ],
     idealFor: 'Teams with a budget for deploying CRSs internally who value privacy with regards to their cybersecurity data.',
   },
-  
+  {
+    slug: 'rsi-verifier',
+    field: 'ascent',
+    navTitle: 'RSI verifier as a service',
+    num: '06',
+    title: 'RSI verifier as a service',
+    summary: 'Independent verification that recursively self-improving AI systems stay within their safety and security bounds.',
+    engagement: 'Product · in development',
+    lede: 'Verify every step of a recursively self-improving (RSI) system — so a system that changes itself cannot quietly change the properties you depend on.',
+    status: 'in-development',
+    badge: 'In development',
+    sections: [
+      {
+        heading: 'What it covers',
+        body: [
+          'Systems that improve themselves — rewriting their own code, training their successors, or modifying their own scaffolding — break the assumption that what you evaluated is what is running. Each improvement step is an opportunity for safety and security properties to drift.',
+          'The RSI verifier sits in the improvement loop as an independent check. You specify the properties that must hold; the verifier checks each proposed change against them before it is accepted, and keeps an auditable record of what was verified, what was rejected, and why.',
+        ],
+      },
+      {
+        heading: 'Status',
+        body: [
+          'This offering is currently in development. If you are building or overseeing self-improving systems, get in touch — we are taking early conversations and design partners now.',
+        ],
+      },
+    ],
+    deliverables: [
+      'Specification of the properties each improvement step must preserve',
+      'Verification gate for proposed self-modifications',
+      'Auditable record of accepted and rejected changes',
+      'Reporting on property drift across generations',
+    ],
+    idealFor: 'Labs and teams building self-improving AI systems, and those responsible for assuring them.',
+  },
 ];
 
 export const getService = (slug: string): Service | undefined =>

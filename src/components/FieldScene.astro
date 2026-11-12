@@ -1,0 +1,151 @@
+---
+/**
+ * The brand artwork as a full-page backdrop: a live Gray–Scott reaction–diffusion
+ * field drawn in 3D with WebGL2. Each page picks a `variant` (see
+ * scripts/field-variants.js): the surface it lives on, the pattern it grows and
+ * how it reacts to the pointer. The camera and light follow the scroll position.
+ * Falls back to the flat Canvas 2D field where WebGL2 float targets are missing.
+ *
+ * Any element with `data-field-stat="steps|feed|kill|seeds|wounds|renderer"`
+ * on the page is filled with live readings from the simulation.
+ */
+import type { FieldVariant } from '../scripts/field-variants.js';
+interface Props { variant?: FieldVariant; }
+const { variant = 'culture' } = Astro.props;
+---
+
+<div class="field-scene" data-field-scene data-variant={variant} aria-hidden="true">
+  <canvas></canvas>
+</div>
+
+<script>
+  import { createFieldTerrain } from '../scripts/field-terrain.js';
+  import { FIELD_VARIANTS } from '../scripts/field-variants.js';
+  import { turingField } from '../scripts/turing-field.js';
+
+  const MAX_PIXEL_RATIO = 2;
+  const STILL_FRAME_STEPS = 3000;   // growth shown when motion is reduced
+  const HEAD_START_STEPS = 1500;    // growth already under way at first paint
+  const SMALL_SCREEN = 720;         // px; below this the field is drawn with fewer points
+  const clamp01 = (value: number) => Math.min(1, Math.max(0, value));
+  const ease = (t: number) => t * t * (3 - 2 * t);
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+
+  const host = document.querySelector<HTMLElement>('[data-field-scene]');
+  let canvas = host?.querySelector('canvas') ?? null;
+  if (host && canvas) {
+    const fit = () => {
+      if (!canvas) return;
+      const ratio = Math.min(devicePixelRatio || 1, MAX_PIXEL_RATIO);
+      canvas.width = Math.max(1, Math.round(innerWidth * ratio));
+      canvas.height = Math.max(1, Math.round(innerHeight * ratio));
+    };
+    fit();
+    const seed = Math.floor(Math.random() * 0xffffffff) + 1;
+    const variant = (host.dataset.variant ?? 'culture') as keyof typeof FIELD_VARIANTS;
+    const light = FIELD_VARIANTS[variant].light;
+    let terrain: ReturnType<typeof createFieldTerrain> | null = null;
+    let flat: ReturnType<typeof turingField> | null = null;
+    try {
+      terrain = createFieldTerrain(canvas, { variant, seed, detail: innerWidth < SMALL_SCREEN ? .57 : 1 });
+      host.dataset.renderer = 'webgl2';
+    } catch (e) {
+      // A canvas that has handed out a WebGL context cannot give a 2D one, so swap in a fresh element.
+      const fresh = canvas.cloneNode(false) as HTMLCanvasElement;
+      canvas.replaceWith(fresh);
+      canvas = fresh;
+      try {
+        flat = turingField(canvas, { n: 200, seed });
+        host.dataset.renderer = 'canvas2d';
+      } catch (e) { /* no canvas at all: the page simply has no backdrop */ }
+    }
+    const scene = terrain ?? flat;
+    if (scene) {
+      host.dataset.state = 'ready';
+      terrain?.advance(reduced.matches ? STILL_FRAME_STEPS : HEAD_START_STEPS);
+
+      // ---- scroll: the camera rises and orbits, the light dims behind the content ----
+      let agitation = 0, lastScroll = scrollY, lastScrollAt = performance.now();
+      const applyScroll = () => {
+        const hero = clamp01(scrollY / (innerHeight * .85));
+        const page = scrollY / Math.max(1, document.documentElement.scrollHeight - innerHeight);
+        const intensity = light.top + (light.rest - light.top) * ease(hero);
+        terrain?.setView({ lift: hero, turn: page * 1.2, intensity });
+        if (canvas && flat) canvas.style.opacity = String(intensity);
+      };
+      const onScroll = () => {
+        const now = performance.now();
+        const speed = Math.abs(scrollY - lastScroll) / Math.max(1, now - lastScrollAt);   // px per ms
+        agitation = Math.max(agitation, clamp01(speed / 4));
+        lastScroll = scrollY; lastScrollAt = now;
+        applyScroll();
+        if (reduced.matches) terrain?.paint();
+      };
+      applyScroll();
+      addEventListener('scroll', onScroll, { passive: true });
+
+      // ---- pointer: wounds an open culture, tips a closed body ----
+      const onPointer = (event: PointerEvent) => {
+        if (reduced.matches) return;
+        terrain?.pointer(event.clientX / innerWidth * 2 - 1, 1 - event.clientY / innerHeight * 2);
+      };
+      addEventListener('pointermove', onPointer, { passive: true });
+
+      // ---- live readings ----
+      const stats = [...document.querySelectorAll<HTMLElement>('[data-field-stat]')];
+      const format: Record<string, (s: Record<string, number>) => string> = {
+        steps: s => Math.round(s.steps).toLocaleString('en-GB').padStart(7, '0'),
+        feed: s => s.feed.toFixed(4),
+        kill: s => s.kill.toFixed(4),
+        seeds: s => String(s.seeds ?? s.activeSeeds ?? 0).padStart(2, '0'),
+        wounds: s => (s.wounds === undefined ? '—' : String(s.wounds).padStart(3, '0')),
+        renderer: () => (terrain ? 'WebGL2' : 'Canvas 2D'),
+      };
+      const report = () => {
+        const reading = scene.getStats() as Record<string, number>;
+        stats.forEach((element) => {
+          const show = format[element.dataset.fieldStat ?? ''];
+          if (show) element.textContent = show(reading);
+        });
+      };
+      report();
+      const reporting = setInterval(report, 200);
+
+      // ---- frame-rate work that is not the simulation itself ----
+      let ticking = 0;
+      const tick = () => {
+        agitation *= .93;   // the swell from a fast scroll settles over about a second
+        terrain?.setView({ agitation });
+        ticking = requestAnimationFrame(tick);
+      };
+
+      const sync = () => {
+        cancelAnimationFrame(ticking);
+        if (document.hidden || reduced.matches) { scene.stop(); scene.paint(); return; }
+        scene.resume();
+        ticking = requestAnimationFrame(tick);
+      };
+      const onResize = () => { fit(); applyScroll(); scene.paint(); };
+      addEventListener('resize', onResize);
+      reduced.addEventListener('change', sync);
+      document.addEventListener('visibilitychange', sync);
+      sync();
+      document.addEventListener('astro:before-swap', () => {
+        scene.stop(); cancelAnimationFrame(ticking); clearInterval(reporting);
+        removeEventListener('scroll', onScroll);
+        removeEventListener('pointermove', onPointer);
+        removeEventListener('resize', onResize);
+        reduced.removeEventListener('change', sync);
+        document.removeEventListener('visibilitychange', sync);
+      }, { once: true });
+    }
+  }
+</script>
+
+<style>
+  /* Fixed behind the whole page; sections scroll over it. */
+  .field-scene { position: fixed; inset: 0; z-index: -1; pointer-events: none; background: var(--ink); }
+  canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0; transition: opacity .4s ease; }
+  [data-state="ready"] canvas { opacity: 1; }
+  @media (prefers-reduced-motion: reduce) { canvas { transition: none; } }
+</style>

@@ -1,5 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
+import AffiliationBar from '../components/AffiliationBar.astro';
+import FieldScene from '../components/FieldScene.astro';
 ---
 
 <Base
@@ -7,7 +9,9 @@ import Base from '../layouts/Base.astro';
   description="About Autopoiesis — self-adaptive security for agentic systems."
   active="about"
 >
-  <section class="about">
+  <FieldScene variant="membrane" />
+
+  <section class="about field-scrim">
     <div class="eyebrow">about</div>
     <h1>We build and break agentic systems.</h1>
 
@@ -16,21 +20,19 @@ import Base from '../layouts/Base.astro';
     </p>
 
     <p>
-      We red-team agents to uncover weaknesses and design secure architectures
-      to contain them. Our work sits at the intersection of AI safety, secure systems engineering and applied research engineering.
+      We red-team agents and AI research environments to uncover weaknesses and design secure architectures
+      to contain cybersecurity risks. Our work sits at the intersection of AI safety, secure systems engineering and applied research engineering.
     </p>
 
     <h2>Our approach</h2>
     <p>
       <em>Autopoiesis</em> describes a system that produces and maintains itself.
       We take the same approach to security as we build systems that can test continuously, contain failures,
-      and adapt defences as systems and threats evolve. The end-goal is to make this autonomous.
+      and adapt defences as systems and threats evolve. The end-goal is to make this an autonomous process.
     </p>
-
-    <h2>Founder</h2>
     <p>
-      Mattia Bradascio, 2x MSc, 1x MSc by Research (University of Edinburgh and Oxford),
-      has been interested in AI security research since 2017 when he joined Dr. Luis Miranda's Anthrobotic's research cluster at the University of Edinburgh. He subsequently received an EPSRC funded CDT studentship in High Performance Computing with a focus on formal verification of stochastic models. After building a formally verifiable stochastic model of a multi-party computation protocol, he left academia to work hands-on as an infrastructure and product security engineer, focusing on securing high performance systems and machine learning platforms, including in national security settings. To further specialise in security, he subsequently enrolled in a part-time MSc in cybersecurity at Oxford University, where he has focused on safety and security critical systems engineering and applied reinforcement learning for agentic cybersecurity. Together, his research, training and professional experience led him to found Autopoiesis, as he sees a critical lack of secure foundations for autonomous systems to securely thrive in.
+      We take a formal approach to the design of every system, using applied category theory and formal grammars
+      to specify how its components compose before anything is built.
     </p>
 
     <h2>Work with us</h2>
@@ -39,6 +41,9 @@ import Base from '../layouts/Base.astro';
       <a href="mailto:info@autopoiesis.uk"> Get in touch</a>.
     </p>
   </section>
+
+  <!-- full-width strip, directly above the footer -->
+  <AffiliationBar />
 </Base>
 
 <style>

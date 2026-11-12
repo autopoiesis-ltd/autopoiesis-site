@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import FieldScene from '../../components/FieldScene.astro';
 import { services } from '../../data/services';
 
 const process = [
@@ -28,7 +29,7 @@ const process = [
 const faqs = [
   {
     q: 'Do you consult, or do you build products?',
-    a: 'Both. We work directly with your team on hands-on engagements — red teaming, secure builds, advisory — and we build security products (RLaaS, Private Cyber-Reasoning-Systems) that deploy into your own environment. The engagements inform the products and vice versa.',
+    a: 'Both. We work directly with your team on hands-on engagements — red teaming, secure builds, advisory — and we build security products (an AI research platform, Private Cyber-Reasoning-Systems, an RSI verifier) that deploy into your own environment. The engagements inform the products and vice versa.',
   },
   {
     q: 'Do you work directly with our engineers?',
@@ -51,9 +52,11 @@ const faqs = [
 
 <Base
   title="Autopoiesis — services"
-  description="Security services and products for agentic systems: Red teaming, Secure builds, Advisory services, Reinforcement Learning as a Service, and Private Cyber-Reasoning-Systems."
+  description="Security services and products for agentic systems: Red teaming, Secure builds, Advisory services, AI Research Platform as a Service, Private Cyber-Reasoning-Systems, and RSI Verifier as a Service."
   active="services"
 >
+  <FieldScene variant="overview" />
+
   <section class="svc-index">
     <div class="eyebrow">services</div>
     <h1>What we do.</h1>
@@ -257,6 +260,8 @@ const faqs = [
       ),
       var(--ink);
   }
+  /* fill the row when the teaser lands alone in the two-column grid */
+  .svc-card--research:nth-child(odd) { grid-column: 1 / -1; }
   .svc-card--research .svc-summary { color: var(--paper-dim); }
   .research-dot {
     display: inline-block;

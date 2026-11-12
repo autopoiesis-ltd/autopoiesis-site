@@ -1,0 +1,89 @@
+---
+import { founderAffiliations } from '../data/affiliations';
+
+/** Two identical groups make the sideways loop seamless; the second is hidden from assistive tech. */
+const groups = [false, true];
+---
+
+<section class="affil" aria-labelledby="affil-label">
+  <div class="eyebrow affil-label" id="affil-label">Founder&rsquo;s current and previous affiliations</div>
+  <div class="affil-viewport">
+    <div class="affil-track">
+      {groups.map((isDuplicate) => (
+        <ul class="affil-group" aria-hidden={isDuplicate ? 'true' : undefined}>
+          {founderAffiliations.map((name) => (
+            <li class="affil-item">{name}</li>
+          ))}
+        </ul>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .affil {
+    /* full-bleed strip; the footer below draws the closing rule */
+    border-top: 1px solid var(--line);
+    padding: 26px 0 28px;
+  }
+  .affil-label {
+    justify-content: center;
+    text-align: center;
+    margin-bottom: 18px;
+  }
+  .affil-viewport {
+    overflow: hidden;
+    container-type: inline-size;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+  }
+  .affil-track {
+    display: flex;
+    width: max-content;
+    animation: affil-scroll 48s linear infinite;
+  }
+  .affil-viewport:hover .affil-track { animation-play-state: paused; }
+  .affil-group {
+    list-style: none;
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: space-around;
+    /* each group at least fills the bar, so the two-group loop never shows a gap */
+    min-width: 100vw;
+    min-width: 100cqw;
+  }
+  .affil-item {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    padding-left: 28px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--paper-dim);
+  }
+  /* diamond separator, matching the service-card bullets */
+  .affil-item::after {
+    content: '';
+    flex: none;
+    width: 6px;
+    height: 6px;
+    border: 1px solid var(--rec);
+    transform: rotate(45deg);
+  }
+  @keyframes affil-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* no motion: show the list once, wrapped and centred */
+  @media (prefers-reduced-motion: reduce) {
+    .affil-viewport { -webkit-mask-image: none; mask-image: none; }
+    .affil-track { animation: none; width: auto; }
+    .affil-group { min-width: 0; flex-wrap: wrap; justify-content: center; row-gap: 12px; padding: 0 24px; }
+    .affil-group[aria-hidden='true'] { display: none; }
+  }
+</style>

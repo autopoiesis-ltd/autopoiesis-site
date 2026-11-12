@@ -1,11 +1,13 @@
 // Numerical core kept independent of the canvas so long runs can be checked.
+export const GRAY_SCOTT_DEFAULTS = Object.freeze({ n: 160, F: .036, k: .061, Du: .16, Dv: .08,
+  seeds: 9, seed: 7, noise: .02, warmup: 3000,
+  breathe: .0015, breathePeriod: 5000, feedBreathe: .0004,
+  seedEvery: 300, seedJitter: .5, maxSources: 4, seedRadius: 5, seedDuration: 90,
+  monitorEvery: 120, activityThreshold: .0005, quietChecks: 4,
+  seedCooldown: 600 });
+
 export function createGrayScott(opts = {}) {
-  const o = { n: 160, F: .036, k: .061, Du: .16, Dv: .08,
-    seeds: 9, seed: 7, noise: .02, warmup: 3000,
-    breathe: .0015, breathePeriod: 5000, feedBreathe: .0004,
-    seedEvery: 300, seedJitter: .5, maxSources: 4, seedRadius: 5, seedDuration: 90,
-    monitorEvery: 120, activityThreshold: .0005, quietChecks: 4,
-    seedCooldown: 600, ...opts };
+  const o = { ...GRAY_SCOTT_DEFAULTS, ...opts };
   const n = o.n, N = n * n;
   let U = new Float32Array(N).fill(1), V = new Float32Array(N);
   let nextU = new Float32Array(N), nextV = new Float32Array(N);
