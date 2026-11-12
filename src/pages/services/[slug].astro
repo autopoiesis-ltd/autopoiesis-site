@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import FieldScene from '../../components/FieldScene.astro';
 import { services } from '../../data/services';
 
 export function getStaticPaths() {
@@ -20,7 +21,9 @@ const next = services[(idx + 1) % services.length];
   description={service.summary}
   active="services"
 >
-  <article class="svc">
+  <FieldScene variant={service.field} />
+
+  <article class="svc field-scrim">
     <a class="back" href="/services/">&larr; <span>All services</span></a>
 
     <div class="svc-head">

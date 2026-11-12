@@ -14,6 +14,7 @@ const { active = null } = Astro.props;
   <a class="brand" href="/">
     <img class="mark" src="/autopoiesis-logo.svg" width="40" height="40" alt="" />
     <div class="wm">autopoiesis</div>
+    <div class="tagline">AI security research lab</div>
   </a>
 
   <div class="nav-right">
@@ -32,7 +33,7 @@ const { active = null } = Astro.props;
       <div class="dd-menu" id="services-menu">
         {services.map((s) => (
           <a
-            class:list={['dd-item', { 'dd-product-start': s.slug === 'reinforcement-learning' }]}
+            class="dd-item"
             href={`/services/${s.slug}/`}
             aria-current={Astro.url.pathname.replace(/\/$/, '') === `/services/${s.slug}` ? 'page' : undefined}
           >

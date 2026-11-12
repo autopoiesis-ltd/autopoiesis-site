@@ -62,6 +62,20 @@ nav .brand .wm {
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
+/* what the company is, beside its name; set apart by a hairline */
+nav .brand .tagline {
+  margin-left: 4px;
+  padding-left: 16px;
+  border-left: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--paper-muted);
+  white-space: nowrap;
+}
+/* the nav has no room for it once the links crowd in */
+@media (max-width: 860px) { nav .brand .tagline { display: none; } }
 nav .nav-right {
   display: flex; align-items: center; gap: 22px;
 }
@@ -203,7 +217,6 @@ nav .login--app:hover {
   transform: translate(2px, -2px);
 }
 .dd-item[aria-current="page"] .dd-num { color: var(--rec); }
-.dd-product-start { border-top: 1px solid var(--line); margin-top: 6px; }
 .dd-divider { height: 1px; background: var(--line); margin: 6px 12px; }
 .dd-all {
   display: flex;
@@ -306,4 +319,21 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--rec); outline-o
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* ==================== SCROLL REVEAL ==================== */
+/* Applied by scripts/scroll-reveal.js; content stays visible without it. */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 700ms cubic-bezier(.2, .7, .2, 1), transform 700ms cubic-bezier(.2, .7, .2, 1);
+}
+.reveal.is-revealed { opacity: 1; transform: none; }
+
+/* ==================== TEXT OVER THE LIVING FIELD ==================== */
+/* A soft-edged ink panel behind a column of running text, so the WebGL
+   backdrop stays visible around it without competing with the words. */
+.field-scrim {
+  background: rgba(20, 18, 16, .8);
+  box-shadow: 0 0 70px 80px rgba(20, 18, 16, .8);
 }
